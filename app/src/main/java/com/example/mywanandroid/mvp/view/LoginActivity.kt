@@ -38,7 +38,10 @@ class LoginActivity: BaseMvpActivity<LoginContract.View, LoginContract.Presenter
     }
 
     override fun initData() {
-
+        Log.d("chenhanbin", "login = " + isLogin)
+        Log.d("chenhanbin", "login = " + username)
+        Log.d("chenhanbin", "login = " + password)
+        Log.d("chenhanbin", "login = " + token)
     }
 
     override fun initView() {
@@ -70,11 +73,12 @@ class LoginActivity: BaseMvpActivity<LoginContract.View, LoginContract.Presenter
 
     override fun loginSuccess(data: LoginData) {
         showToast("登陆成功")
+        Log.d("chenhanbin0", "登陆成功")
         isLogin = true
         username = data.username
         password = data.password
         token = data.token
-
+        Log.d("chenhanbin0", "token = " + token + " , user = " + username + " , password = " + password)
         EventBus.getDefault().post(LoginEvent(true))
         finish()
     }
@@ -91,6 +95,7 @@ class LoginActivity: BaseMvpActivity<LoginContract.View, LoginContract.Presenter
             R.id.login_layout_btn_register -> {
                 var intent = Intent(this@LoginActivity, RegisterActivity::class.java)
                 startActivity(intent)
+                finish()
             }
         }
     }

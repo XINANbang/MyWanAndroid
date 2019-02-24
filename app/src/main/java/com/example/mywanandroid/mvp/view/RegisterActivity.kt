@@ -40,6 +40,7 @@ class RegisterActivity: BaseMvpActivity<RegisterContract.View, RegisterContract.
 
     override fun initView() {
         super.initView()
+        Log.d("chenhanbin", "login = " + isLogin)
         register_layout_btn_register.setOnClickListener(onClickListener)
         register_layout_btn_login.setOnClickListener(onClickListener)
     }
@@ -70,6 +71,7 @@ class RegisterActivity: BaseMvpActivity<RegisterContract.View, RegisterContract.
         username = data.username
         password = data.password
         token = data.token
+        Log.d("chenhanbin0", "token = " + token + " , user = " + username + " , password = " + password)
 
         EventBus.getDefault().post(LoginEvent(true))
         finish()
