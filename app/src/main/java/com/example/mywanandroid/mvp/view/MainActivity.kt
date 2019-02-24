@@ -7,40 +7,203 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
+import androidx.appcompat.app.ActionBarDrawerToggle
 import com.example.mywanandroid.R
 import com.example.mywanandroid.constant.Constant
+import com.example.mywanandroid.event.LoginEvent
+import com.example.mywanandroid.mvp.base.BaseMvpActivity
+import com.example.mywanandroid.mvp.contract.MainContract
+import com.example.mywanandroid.mvp.presenter.MainPresenter
 import com.example.mywanandroid.utils.Preference
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomnavigation.LabelVisibilityMode
+import com.google.android.material.navigation.NavigationView
 
 import kotlinx.android.synthetic.main.activity_main.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.longToast
+import org.jetbrains.anko.uiThread
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(), MainContract.View {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+    private val username: String by Preference(Constant.KEY_LOGIN_USERNAME, "")
 
-        fab.setOnClickListener { view -> kotlin.run{
+    private var nav_username: TextView? = null
+
+    override fun createPresenter(): MainContract.Presenter = MainPresenter()
+
+    override fun layoutId(): Int = R.layout.activity_main
+
+    override fun initData() {
+    }
+
+    override fun initView() {
+        toolbar.run {
+            title = "玩Android"
+            setSupportActionBar(toolbar)
+        }
+
+        main_layout_fab.setOnClickListener { view -> kotlin.run{
             var intent = Intent(this@MainActivity, LoginActivity::class.java)
-            startActivity(intent)
+                startActivity(intent)
             }
         }
-        Log.d("chenhanbin", "login = " + Preference(Constant.KEY_LOGIN_STATE, false))
+
+        initDrawLayout()
+
+        main_layout_bottom_nav.run {
+            labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_LABELED
+            setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+        }
+
+        main_layout_drawerlayout_nav.run {
+            setNavigationItemSelectedListener(navigationItemSelectedListener)
+            menu.findItem(R.id.nav_logout).isVisible = isLogin
+            nav_username = getHeaderView(0).findViewById(R.id.main_layout_head_tv_username)
+        }
+        nav_username?.run {
+            text = if (!isLogin) {
+                "登录00"
+            } else {
+                username
+            }
+            setOnClickListener {
+                Log.d("chenhanbin", "isLogin = " + isLogin)
+                if (!isLogin) {
+                    Intent(this@MainActivity, LoginActivity::class.java).run {
+                        startActivity(this)
+                    }
+                }
+            }
+        }
+
+        super.initView()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
+    private fun initDrawLayout() {
+        main_layout_drawerlayout.run {
+            var toggle = ActionBarDrawerToggle(
+                this@MainActivity,
+                this,
+                toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close)
+            addDrawerListener(toggle)
+            toggle.syncState()
+        }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+    override fun start() {
+    }
+
+    override fun showLoading() {
+    }
+
+    override fun hideLoading() {
+    }
+
+    override fun showToast(msg: String) {
+        longToast(msg)
+    }
+
+    override fun showError() {
+    }
+
+    override fun logoutSuccess(success: Boolean) {
+        if (success) {
+            doAsync {
+                // CookieManager().clearAllCookies()
+                Preference.clearPreference()
+                uiThread {
+                    showToast("退出登录成功")
+                    isLogin = false
+                    EventBus.getDefault().post(LoginEvent(false))
+                    Intent(this@MainActivity, LoginActivity::class.java).run {
+                        startActivity(this)
+                    }
+                }
+            }
+        }
+    }
+
+    enum class FRAGMENT_TYPE {
+        HOME, KNOWLEDGE, NAVIGATION, PROJECT, WECHATE
+    }
+
+    private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener {
+        item -> return@OnNavigationItemSelectedListener when (item.itemId) {
+            R.id.action_home -> {
+                showFragment(FRAGMENT_TYPE.HOME)
+                true
+            }
+            R.id.action_knowledge_system -> {
+                showFragment(FRAGMENT_TYPE.KNOWLEDGE)
+                true
+            }
+            R.id.action_navigation -> {
+                showFragment(FRAGMENT_TYPE.NAVIGATION)
+                true
+            }
+            R.id.action_project -> {
+                showFragment(FRAGMENT_TYPE.PROJECT)
+                true
+            }
+            R.id.action_wechat -> {
+                showFragment(FRAGMENT_TYPE.WECHATE)
+                true
+            }
+            else -> false
+        }
+    }
+
+    private fun showFragment(type: FRAGMENT_TYPE) {
+
+    }
+
+    private val navigationItemSelectedListener = NavigationView.OnNavigationItemSelectedListener{
+        item -> when(item.itemId) {
+            R.id.nav_collect -> {
+                if (isLogin) {
+                    showToast("点击了收藏")
+                } else {
+                    showToast("请先登录")
+                    Intent(this@MainActivity, LoginActivity::class.java).run {
+                        startActivity(this)
+                    }
+                }
+            }
+            R.id.nav_about -> {
+
+
+            }
+            R.id.nav_night_mode -> {
+
+            }
+            R.id.nav_todo -> {
+
+            }
+            R.id.nav_setting -> {
+
+            }
+            R.id.nav_logout -> {
+                mPresenter?.logout()
+            }
+        }
+        true
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun loginEvent(event: LoginEvent) {
+        if (event.isLogin) {
+            nav_username?.text = username
+            main_layout_drawerlayout_nav.menu.findItem(R.id.nav_logout).isVisible = true
+        } else {
+            nav_username?.text = "请登录"
+            main_layout_drawerlayout_nav.menu.findItem(R.id.nav_logout).isVisible = false
         }
     }
 }
