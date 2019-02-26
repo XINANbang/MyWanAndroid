@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardElevation="@dimen/dp_5"
+        app:cardCornerRadius="@dimen/dp_5"
+        android:background="@color/viewBackground">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/dp_10"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10">
+
+        <TextView
+                android:id="@+id/fragment_home_recycleview_item_tag_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tag_notice"
+                android:text="置顶"
+                android:paddingLeft="@dimen/dp_4"
+                android:paddingRight="@dimen/dp_4"
+                android:paddingTop="@dimen/dp_2"
+                android:paddingBottom="@dimen/dp_2"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:visibility="visible"
+                tools:visibility="visible"/>
+
+        <TextView
+                android:id="@+id/fragment_home_recycleview_item_tag_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tag_notice"
+                android:text="置顶"
+                android:paddingLeft="@dimen/dp_4"
+                android:paddingRight="@dimen/dp_4"
+                android:paddingTop="@dimen/dp_2"
+                android:paddingBottom="@dimen/dp_2"
+                android:visibility="visible"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_toRightOf="@id/fragment_home_recycleview_item_tag_top"
+                tools:visibility="visible"/>
+
+        <TextView
+                android:id="@+id/fragment_home_recycleview_item_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tag_normal"
+                android:text="置顶"
+                android:paddingLeft="@dimen/dp_4"
+                android:paddingRight="@dimen/dp_4"
+                android:paddingTop="@dimen/dp_2"
+                android:paddingBottom="@dimen/dp_2"
+                android:visibility="visible"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_toRightOf="@id/fragment_home_recycleview_item_tag_new"
+                tools:visibility="visible"/>
+
+        <TextView
+                android:id="@+id/fragment_home_recycleview_item_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2019-1-1"
+                android:paddingLeft="@dimen/dp_4"
+                android:paddingRight="@dimen/dp_4"
+                android:paddingTop="@dimen/dp_2"
+                android:paddingBottom="@dimen/dp_2"
+                android:layout_marginRight="@dimen/dp_10"
+                android:layout_alignParentRight="true"
+                android:visibility="visible"
+                tools:visibility="visible"/>
+
+        <ImageView
+                android:id="@+id/fragment_home_recycleview_item_preimage"
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="@dimen/dp_90"
+                android:layout_marginTop="@dimen/dp_8"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_below="@id/fragment_home_recycleview_item_tag_top"/>
+
+
+        <TextView
+                android:id="@+id/fragment_home_recycleview_item_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_16"
+                android:textColor="@color/fragment_home_item_title"
+                android:text="标题标题"
+                android:gravity="start|top"
+                android:lineSpacingExtra="@dimen/dp_2"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:paddingBottom="@dimen/dp_6"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_8"
+                android:layout_toRightOf="@id/fragment_home_recycleview_item_preimage"
+                android:layout_below="@id/fragment_home_recycleview_item_tag_top"
+                android:visibility="visible"
+                tools:visibility="visible"/>
+
+        <TextView
+                android:id="@+id/fragment_home_recycleview_item_chapterName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fragment_home_recycleview_item_title"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"
+                android:paddingBottom="@dimen/dp_2"
+                android:gravity="center"
+                android:layout_toRightOf="@id/fragment_home_recycleview_item_preimage"
+                android:textColor="@color/fragment_home_item_chapter"
+                android:textSize="@dimen/sp_12"
+                tools:text="@string/app_name" />
+
+        <ImageView
+                android:id="@+id/fragment_home_recycleview_item_thumbnail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_uncollect"
+                android:paddingBottom="@dimen/dp_2"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"/>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_2"
+                android:background="@color/Black"
+                android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

@@ -9,6 +9,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.example.mywanandroid.R
 import com.example.mywanandroid.constant.Constant
 import com.example.mywanandroid.event.LoginEvent
@@ -21,6 +23,7 @@ import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.google.android.material.navigation.NavigationView
 
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -33,6 +36,8 @@ class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(
     private val username: String by Preference(Constant.KEY_LOGIN_USERNAME, "")
 
     private var nav_username: TextView? = null
+
+    private var homeFragment: HomeFragment? = null
 
     override fun createPresenter(): MainContract.Presenter = MainPresenter()
 
@@ -80,7 +85,6 @@ class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(
                 }
             }
         }
-
         super.initView()
     }
 
@@ -161,7 +165,20 @@ class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(
     }
 
     private fun showFragment(type: FRAGMENT_TYPE) {
+        Log.d("chenhanbin", "showFragment: " +type)
+        val transaction = supportFragmentManager.beginTransaction()
+        hideFragments(transaction)
+        if (homeFragment == null) {
+            homeFragment = HomeFragment.getInstance()
+            transaction.add(R.id.main_layout_container, homeFragment!!, "home")
+        } else {
+            transaction.show(homeFragment!!)
+        }
+        transaction.commit()
+    }
 
+    private fun hideFragments(transaction: FragmentTransaction) {
+        homeFragment?.let { transaction.hide(it) }
     }
 
     private val navigationItemSelectedListener = NavigationView.OnNavigationItemSelectedListener{

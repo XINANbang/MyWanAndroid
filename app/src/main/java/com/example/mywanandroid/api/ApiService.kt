@@ -1,12 +1,8 @@
 package com.example.mywanandroid.api
 
-import com.example.mywanandroid.mvp.model.bean.HttpResult
-import com.example.mywanandroid.mvp.model.bean.LoginData
+import com.example.mywanandroid.mvp.model.bean.*
 import io.reactivex.Observable
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 /**
  * create by chenhanbin at 2019/2/23
@@ -43,5 +39,25 @@ interface ApiService{
      */
     @GET("user/logout/json")
     fun logout(): Observable<HttpResult<Any>>
+
+
+    /**
+     * 获取Home页面顶部Banner轮播图
+     */
+    @GET("banner/json")
+    fun requireHomeBanner(): Observable<HttpResult<List<Banner>>>
+
+
+    /**
+     * 获取Home页面文章列表
+     */
+    @GET("article/list/{pageNum}/json")
+    fun requireHomeArticlesList(@Path("pageNum") pageNum: Int): Observable<HttpResult<ArticleList>>
+
+    /**
+     * 获取Home页面置顶文章
+     */
+    @GET("article/top/json")
+    fun requireHomeTopArticles():Observable<HttpResult<MutableList<Article>>>
 
 }
