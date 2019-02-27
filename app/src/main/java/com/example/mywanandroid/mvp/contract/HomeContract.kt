@@ -22,6 +22,10 @@ interface HomeContract {
         fun requireTopArticles(): Observable<HttpResult<MutableList<Article>>>
 
         fun requireArticlesList(pageNum: Int): Observable<HttpResult<ArticleList>>
+
+        fun addCollect(id: Int): Observable<HttpResult<Any>>
+
+        fun cancelCollect(id: Int): Observable<HttpResult<Any>>
     }
 
     interface View: IView{
@@ -31,6 +35,7 @@ interface HomeContract {
         fun setBanner(banners: List<Banner>)
 
         fun setArticlesList(articleList: ArticleList)
+
     }
 
     interface Presenter: IPresenter<View>{
@@ -40,5 +45,9 @@ interface HomeContract {
         fun requireBanner()
 
         fun requireArticlesList(pageNum: Int)
+
+        fun addCollect(id: Int)
+
+        fun cancelCollect(id: Int)
     }
 }

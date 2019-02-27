@@ -44,4 +44,15 @@ class HomePresenter: BasePresenter<HomeContract.Model, HomeContract.View>(), Hom
         }
     }
 
+    override fun addCollect(id: Int) {
+        mModel?.addCollect(id)?.ss(mModel, mView) {
+
+        }
+    }
+
+    override fun cancelCollect(id: Int) {
+        mModel?.cancelCollect(id)?.ss(mModel, mView){
+
+        }
+    }
 }

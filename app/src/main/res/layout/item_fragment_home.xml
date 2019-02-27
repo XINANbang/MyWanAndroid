@@ -7,6 +7,7 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
+        android:layout_margin="@dimen/dp_5"
         app:cardElevation="@dimen/dp_5"
         app:cardCornerRadius="@dimen/dp_5"
         android:background="@color/viewBackground">
@@ -14,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_5"
             android:paddingLeft="@dimen/dp_10"
             android:paddingRight="@dimen/dp_10">
 
@@ -135,6 +137,7 @@
                 android:background="@color/Black"
                 android:layout_below="@id/fragment_home_recycleview_item_preimage"
                 android:layout_marginTop="@dimen/dp_10"
+                android:visibility="gone"
                 android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>

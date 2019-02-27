@@ -60,4 +60,30 @@ interface ApiService{
     @GET("article/top/json")
     fun requireHomeTopArticles():Observable<HttpResult<MutableList<Article>>>
 
+    /**
+     * 收藏文章，标示为 id
+     */
+    @POST("lg/collect/{id}/json")
+    fun addCollect(@Path("id")id: Int):Observable<HttpResult<Any>>
+
+    /**
+     * 获得收藏列表
+     */
+    @GET("lg/collect/list/{page}/json")
+    fun getCollectList(): Observable<HttpResult<CollectionResponseBody<CollectionArticle>>>
+
+    /**
+     * 文章列表取消收藏
+     */
+    @POST("lg/uncollect_originId/{id}/json")
+    fun cancelCollect(@Path("id")id: Int): Observable<HttpResult<Any>>
+
+    /**
+     * 收藏界面取消收藏
+     */
+    @POST("lg/uncollect/{id}/json")
+    @FormUrlEncoded
+    fun removeCollectArticle(@Path("id") id: Int,
+                             @Field("originId") originId: Int = -1): Observable<HttpResult<Any>>
+
 }

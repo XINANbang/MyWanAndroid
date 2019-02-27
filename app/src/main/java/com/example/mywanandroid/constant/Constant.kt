@@ -13,4 +13,13 @@ object Constant{
     const val KEY_TOKEN = "token"
 
     const val KEY_HAS_NETWORK = "has_network"
+
+    const val KEY_DETAIL_URL_KEY = "url"
+    const val KEY_DETAIL_TITLE = "title"
+    const val KEY_DETAIL_ID = "id"
+
+    /**
+     * share key
+     */
+    const val CONTENT_SHARE_TYPE = "text/plain"
 }

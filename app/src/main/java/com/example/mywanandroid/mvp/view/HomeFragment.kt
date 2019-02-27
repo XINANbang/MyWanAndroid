@@ -1,5 +1,6 @@
 package com.example.mywanandroid.mvp.view
 
+import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -11,6 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.mywanandroid.App
 import com.example.mywanandroid.R
 import com.example.mywanandroid.adapter.HomeAdapter
+import com.example.mywanandroid.constant.Constant
 import com.example.mywanandroid.ext.load
 import com.example.mywanandroid.mvp.base.BaseMvpFragment
 import com.example.mywanandroid.mvp.contract.HomeContract
@@ -88,7 +90,12 @@ class HomeFragment: BaseMvpFragment<HomeContract.View, HomeContract.Presenter>()
     }
 
     override fun hideLoading() {
-
+        fragment_home_swip_refresh_layout.isRefreshing = false
+        if (isRefresh) {
+            homeAdapter.run {
+                setEnableLoadMore(true)
+            }
+        }
     }
 
     override fun showToast(msg: String) {
@@ -129,6 +136,7 @@ class HomeFragment: BaseMvpFragment<HomeContract.View, HomeContract.Presenter>()
             onItemChildClickListener = this@HomeFragment.onItemChildClickListener
 
         }
+
     }
 
 
@@ -156,7 +164,7 @@ class HomeFragment: BaseMvpFragment<HomeContract.View, HomeContract.Presenter>()
                 } else {
                     addData(it)
                 }
-                var size = it.size
+                val size = it.size
                 if (size < articleList.size) {
                     loadMoreEnd(isRefresh)
                 } else {
@@ -177,9 +185,12 @@ class HomeFragment: BaseMvpFragment<HomeContract.View, HomeContract.Presenter>()
         if (articlesDatas.size != 0) {
             val data = articlesDatas[position]
 //            展示详情
-//            Intent(activity, ContentActivity::class.java).run {
-//                putExtra()
-//            }
+            Intent(activity, DetailsActivity::class.java).run {
+                putExtra(Constant.KEY_DETAIL_ID, data.id)
+                putExtra(Constant.KEY_DETAIL_URL_KEY, data.link)
+                putExtra(Constant.KEY_DETAIL_TITLE, data.title)
+                startActivity(this)
+            }
         }
 
     }
@@ -194,9 +205,20 @@ class HomeFragment: BaseMvpFragment<HomeContract.View, HomeContract.Presenter>()
                             showToast("网络异常")
                             return@OnItemChildClickListener
                         }
+                        Log.d("chenhanbin", "fragment_home_recycleview_item_thumbnail")
+                        Log.d("chenhanbin", "data.collect = " + data.collect)
+                        Log.d("chenhanbin", "data.id = " + data.id)
+                        if (data.collect) {
+                            mPresenter?.cancelCollect(data.id)
+                        } else {
+                            mPresenter?.addCollect(data.id)
+                        }
                         data.collect = !data.collect
                         homeAdapter.setData(position, data)
-                        //todo 收藏功能对接服务器
+                    } else {
+                        Intent(activity, LoginActivity::class.java).run {
+                            startActivity(this)
+                        }
                     }
                 }
             }

@@ -10,4 +10,6 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="share_format">%1$s分享【%2$s】：%3$s</string>
 </resources>

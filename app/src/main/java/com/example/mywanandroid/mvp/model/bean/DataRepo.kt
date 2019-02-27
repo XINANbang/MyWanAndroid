@@ -80,3 +80,34 @@ data class Banner(
     @Json(name = "type") val type: Int,
     @Json(name = "url") val url: String
 )
+
+//返回的收藏结果
+data class CollectionResponseBody<T>(
+    @Json(name = "curPage") val curPage: Int,
+    @Json(name = "datas") val datas: List<T>,
+    @Json(name = "offset") val offset: Int,
+    @Json(name = "over") val over: Boolean,
+    @Json(name = "pageCount") val pageCount: Int,
+    @Json(name = "size") val size: Int,
+    @Json(name = "total") val total: Int
+)
+
+//收藏的文章
+data class CollectionArticle(
+    @Json(name = "author") val author: String,
+    @Json(name = "chapterId") val chapterId: Int,
+    @Json(name = "chapterName") val chapterName: String,
+    @Json(name = "courseId") val courseId: Int,
+    @Json(name = "desc") val desc: String,
+    @Json(name = "envelopePic") val envelopePic: String,
+    @Json(name = "id") val id: Int,
+    @Json(name = "link") val link: String,
+    @Json(name = "niceDate") val niceDate: String,
+    @Json(name = "origin") val origin: String,
+    @Json(name = "originId") val originId: Int,
+    @Json(name = "publishTime") val publishTime: Long,
+    @Json(name = "title") val title: String,
+    @Json(name = "userId") val userId: Int,
+    @Json(name = "visible") val visible: Int,
+    @Json(name = "zan") val zan: Int
+)

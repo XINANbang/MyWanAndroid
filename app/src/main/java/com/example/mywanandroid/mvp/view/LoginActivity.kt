@@ -46,7 +46,7 @@ class LoginActivity: BaseMvpActivity<LoginContract.View, LoginContract.Presenter
 
     override fun initView() {
         super.initView()
-        login_layout_et_username.setText("oooaoaoa")
+        login_layout_et_username.setText("chbtest4")
         login_layout_btn_login.setOnClickListener(onClickListener)
         login_layout_btn_register.setOnClickListener(onClickListener)
     }

@@ -30,6 +30,8 @@
         <activity
                 android:name=".mvp.view.RegisterActivity"
                 android:theme="@style/AppTheme.FullScreen" />
+
+        <activity android:name=".mvp.view.DetailsActivity" />
     </application>
 
 </manifest>

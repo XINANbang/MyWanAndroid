@@ -23,13 +23,13 @@ class CacheInterceptor: Interceptor {
         if (!NetworkUtil.isNetworkAvailable(App.context)) {
             val maxAge = 60 * 3
             response.newBuilder()
-                .header(HttpConstant.CACHE_CONTROL, "oublic, max-age=$maxAge")
+                .header(HttpConstant.CACHE_CONTROL, "public, max-age=$maxAge")
                 .removeHeader("Retrofit")// 清除头信息，因为服务器如果不支持，会返回一些干扰信息，不清除下面无法生效
                 .build()
         } else {
             val maxStale = 60 * 60 * 24 * 28 //4周超时
             response.newBuilder()
-                .header(HttpConstant.CACHE_CONTROL, "oublic, only-if-cached, max-stale=$maxStale")
+                .header(HttpConstant.CACHE_CONTROL, "public, only-if-cached, max-stale=$maxStale")
                 .removeHeader("nyn")
                 .build()
         }

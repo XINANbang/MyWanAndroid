@@ -23,4 +23,12 @@ class HomeModel: BaseModel(), HomeContract.Model{
         return HttpUtil.service.requireHomeArticlesList(pageNum)
     }
 
+    override fun addCollect(id: Int): Observable<HttpResult<Any>> {
+        return HttpUtil.service.addCollect(id)
+    }
+
+    override fun cancelCollect(id: Int): Observable<HttpResult<Any>> {
+        return HttpUtil.service.cancelCollect(id)
+    }
+
 }

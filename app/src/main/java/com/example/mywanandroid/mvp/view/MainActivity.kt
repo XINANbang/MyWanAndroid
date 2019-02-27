@@ -53,8 +53,7 @@ class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(
         }
 
         main_layout_fab.setOnClickListener { view -> kotlin.run{
-            var intent = Intent(this@MainActivity, LoginActivity::class.java)
-                startActivity(intent)
+               homeFragment?.scrollToTop()
             }
         }
 
@@ -85,6 +84,7 @@ class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(
                 }
             }
         }
+        showFragment(FRAGMENT_TYPE.HOME)
         super.initView()
     }
 
