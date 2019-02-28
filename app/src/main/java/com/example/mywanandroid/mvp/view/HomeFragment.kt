@@ -13,6 +13,8 @@ import com.example.mywanandroid.App
 import com.example.mywanandroid.R
 import com.example.mywanandroid.adapter.HomeAdapter
 import com.example.mywanandroid.constant.Constant
+import com.example.mywanandroid.event.CollectEvent
+import com.example.mywanandroid.event.LoginEvent
 import com.example.mywanandroid.ext.load
 import com.example.mywanandroid.mvp.base.BaseMvpFragment
 import com.example.mywanandroid.mvp.contract.HomeContract
@@ -23,6 +25,8 @@ import com.example.mywanandroid.mvp.presenter.HomePresenter
 import com.example.mywanandroid.utils.NetworkUtil
 import com.example.mywanandroid.utils.SpaceItemDecoration
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.support.v4.longToast
 
 /**
@@ -189,6 +193,7 @@ class HomeFragment: BaseMvpFragment<HomeContract.View, HomeContract.Presenter>()
                 putExtra(Constant.KEY_DETAIL_ID, data.id)
                 putExtra(Constant.KEY_DETAIL_URL_KEY, data.link)
                 putExtra(Constant.KEY_DETAIL_TITLE, data.title)
+                putExtra(Constant.KEY_DETAIL_COLLECT, data.collect)
                 startActivity(this)
             }
         }
@@ -224,6 +229,16 @@ class HomeFragment: BaseMvpFragment<HomeContract.View, HomeContract.Presenter>()
             }
         }
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onCollect(event: CollectEvent) {
+        mPresenter?.requestHomeData()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onLogin(event: LoginEvent) {
+        mPresenter?.requestHomeData()
     }
 
 }

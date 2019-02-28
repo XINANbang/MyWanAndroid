@@ -144,22 +144,22 @@ class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(
                 showFragment(FRAGMENT_TYPE.HOME)
                 true
             }
-            R.id.action_knowledge_system -> {
+            R.id.action_todo -> {
                 showFragment(FRAGMENT_TYPE.KNOWLEDGE)
                 true
             }
-            R.id.action_navigation -> {
-                showFragment(FRAGMENT_TYPE.NAVIGATION)
-                true
-            }
-            R.id.action_project -> {
-                showFragment(FRAGMENT_TYPE.PROJECT)
-                true
-            }
-            R.id.action_wechat -> {
-                showFragment(FRAGMENT_TYPE.WECHATE)
-                true
-            }
+//            R.id.action_navigation -> {
+//                showFragment(FRAGMENT_TYPE.NAVIGATION)
+//                true
+//            }
+//            R.id.action_project -> {
+//                showFragment(FRAGMENT_TYPE.PROJECT)
+//                true
+//            }
+//            R.id.action_wechat -> {
+//                showFragment(FRAGMENT_TYPE.WECHATE)
+//                true
+//            }
             else -> false
         }
     }

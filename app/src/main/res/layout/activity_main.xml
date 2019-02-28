@@ -39,7 +39,8 @@
                 android:layout_marginEnd="@dimen/dp_20"
                 android:layout_marginRight="@dimen/dp_20"
                 android:layout_marginBottom="@dimen/dp_60"
-                app:srcCompat="@android:drawable/ic_dialog_email"/>
+                android:backgroundTint="@color/colorPrimary"
+                app:srcCompat="@drawable/ic_top_black_24dp"/>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/main_layout_bottom_nav"

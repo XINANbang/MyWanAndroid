@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
+import android.util.Log
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
@@ -12,6 +13,7 @@ import android.webkit.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.example.mywanandroid.R
 import com.example.mywanandroid.constant.Constant
+import com.example.mywanandroid.event.CollectEvent
 import com.example.mywanandroid.ext.getWebView
 import com.example.mywanandroid.mvp.base.BaseMvpActivity
 import com.example.mywanandroid.mvp.contract.DetailsContract
@@ -20,6 +22,9 @@ import com.google.android.material.appbar.AppBarLayout
 import com.just.agentweb.AgentWeb
 import com.just.agentweb.NestedScrollAgentWebView
 import kotlinx.android.synthetic.main.activity_details.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.longToast
 
 /**
@@ -31,6 +36,7 @@ class DetailsActivity: BaseMvpActivity<DetailsContract.View, DetailsContract.Pre
     private lateinit var intentTitle: String
     private lateinit var intentUrl: String
     private var intentId: Int = 0
+    private var collect: Boolean = false
     private val webView: NestedScrollAgentWebView by lazy {
         NestedScrollAgentWebView(this)
     }
@@ -59,7 +65,12 @@ class DetailsActivity: BaseMvpActivity<DetailsContract.View, DetailsContract.Pre
             intentId = it.getInt(Constant.KEY_DETAIL_ID, -1)
             intentTitle = it.getString(Constant.KEY_DETAIL_TITLE, "")
             intentUrl = it.getString(Constant.KEY_DETAIL_URL_KEY, "")
+            collect = it.getBoolean(Constant.KEY_DETAIL_COLLECT, false)
         }
+        invalidateOptionsMenu()
+        Log.d("chenhanbin", "collect" + collect)
+        Log.d("chenhanbin", "intentTitle" + intentTitle)
+        Log.d("chenhanbin", "intentUrl" + intentUrl)
 
         initWebView()
     }
@@ -136,7 +147,11 @@ class DetailsActivity: BaseMvpActivity<DetailsContract.View, DetailsContract.Pre
             }
             R.id.action_collect -> {
                 if (isLogin) {
-                    mPresenter?.collect(intentId)
+                    if (collect) {
+                        mPresenter?.uncollect(intentId)
+                    } else {
+                        mPresenter?.collect(intentId)
+                    }
                 } else {
                     Intent(this, LoginActivity::class.java).run {
                         startActivity(this)
@@ -154,6 +169,13 @@ class DetailsActivity: BaseMvpActivity<DetailsContract.View, DetailsContract.Pre
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.findItem(R.id.action_collect)?.let {
+            it.title = if (collect) "取消收藏" else "收藏"
+        }
+        return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onBackPressed() {
@@ -206,10 +228,16 @@ class DetailsActivity: BaseMvpActivity<DetailsContract.View, DetailsContract.Pre
     }
 
     override fun onCollect() {
-
+        EventBus.getDefault().post(CollectEvent(true))
     }
 
     override fun onUncollect() {
+        EventBus.getDefault().post(CollectEvent(false))
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onCollect(event: CollectEvent) {
+        collect = event.collect
+        invalidateOptionsMenu()
     }
 }
