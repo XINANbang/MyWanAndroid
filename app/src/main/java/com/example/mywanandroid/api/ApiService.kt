@@ -70,7 +70,7 @@ interface ApiService{
      * 获得收藏列表
      */
     @GET("lg/collect/list/{page}/json")
-    fun getCollectList(): Observable<HttpResult<CollectionResponseBody<CollectionArticle>>>
+    fun getCollectList(@Path("page") pageNum: Int): Observable<HttpResult<CollectionResponseBody<CollectionArticle>>>
 
     /**
      * 文章列表取消收藏

@@ -5,17 +5,14 @@
             android:id="@+id/nav_collect"
             android:title="收藏" />
     <item
-            android:id="@+id/nav_todo"
-            android:title="TODO" />
-    <item
-            android:id="@+id/nav_setting"
-            android:title="设置" />
-    <item
             android:id="@+id/nav_night_mode"
             android:title="夜间模式" />
     <item
             android:id="@+id/nav_about"
             android:title="关于我们" />
+    <item
+            android:id="@+id/nav_setting"
+            android:title="设置" />
     <item
             android:id="@+id/nav_logout"
             android:title="退出" />

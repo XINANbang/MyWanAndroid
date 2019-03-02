@@ -17,6 +17,7 @@ object Constant{
     const val KEY_DETAIL_URL_KEY = "url"
     const val KEY_DETAIL_TITLE = "title"
     const val KEY_DETAIL_ID = "id"
+    const val KEY_DETAIL_ORIGIN_ID = "origin_id"
     const val KEY_DETAIL_COLLECT = "collect"
 
     /**

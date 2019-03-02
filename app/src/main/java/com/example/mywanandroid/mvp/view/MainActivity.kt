@@ -185,7 +185,9 @@ class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(
         item -> when(item.itemId) {
             R.id.nav_collect -> {
                 if (isLogin) {
-                    showToast("点击了收藏")
+                    Intent(this@MainActivity, CollectActivity::class.java).run {
+                        startActivity(this)
+                    }
                 } else {
                     showToast("请先登录")
                     Intent(this@MainActivity, LoginActivity::class.java).run {
@@ -198,9 +200,6 @@ class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(
 
             }
             R.id.nav_night_mode -> {
-
-            }
-            R.id.nav_todo -> {
 
             }
             R.id.nav_setting -> {

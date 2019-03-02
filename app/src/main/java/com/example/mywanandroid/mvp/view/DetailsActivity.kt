@@ -36,6 +36,7 @@ class DetailsActivity: BaseMvpActivity<DetailsContract.View, DetailsContract.Pre
     private lateinit var intentTitle: String
     private lateinit var intentUrl: String
     private var intentId: Int = 0
+    private var intentOriginId: Int = 0
     private var collect: Boolean = false
     private val webView: NestedScrollAgentWebView by lazy {
         NestedScrollAgentWebView(this)
@@ -63,14 +64,17 @@ class DetailsActivity: BaseMvpActivity<DetailsContract.View, DetailsContract.Pre
         }
         intent.extras?.let {
             intentId = it.getInt(Constant.KEY_DETAIL_ID, -1)
+            intentOriginId = it.getInt(Constant.KEY_DETAIL_ORIGIN_ID, -1)
             intentTitle = it.getString(Constant.KEY_DETAIL_TITLE, "")
             intentUrl = it.getString(Constant.KEY_DETAIL_URL_KEY, "")
             collect = it.getBoolean(Constant.KEY_DETAIL_COLLECT, false)
         }
         invalidateOptionsMenu()
-        Log.d("chenhanbin", "collect" + collect)
-        Log.d("chenhanbin", "intentTitle" + intentTitle)
-        Log.d("chenhanbin", "intentUrl" + intentUrl)
+        Log.d("chenhanbin", "Details collect" + collect)
+        Log.d("chenhanbin", "Details intentTitle" + intentTitle)
+        Log.d("chenhanbin", "Details intentUrl" + intentUrl)
+        Log.d("chenhanbin", "Details intentId" + intentId)
+        Log.d("chenhanbin", "Details intentOriginId" + intentOriginId)
 
         initWebView()
     }
@@ -174,6 +178,7 @@ class DetailsActivity: BaseMvpActivity<DetailsContract.View, DetailsContract.Pre
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         menu?.findItem(R.id.action_collect)?.let {
             it.title = if (collect) "取消收藏" else "收藏"
+            it.setVisible(intentOriginId == -1)
         }
         return super.onPrepareOptionsMenu(menu)
     }

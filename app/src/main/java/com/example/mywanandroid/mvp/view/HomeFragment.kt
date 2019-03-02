@@ -24,6 +24,7 @@ import com.example.mywanandroid.mvp.model.bean.Banner
 import com.example.mywanandroid.mvp.presenter.HomePresenter
 import com.example.mywanandroid.utils.NetworkUtil
 import com.example.mywanandroid.utils.SpaceItemDecoration
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -55,6 +56,16 @@ class HomeFragment: BaseMvpFragment<HomeContract.View, HomeContract.Presenter>()
     private var bannerView:View? = null
 
     /**
+     * banner适配器
+     */
+    private val bannerAdapter: BGABanner.Adapter<ImageView, String> by lazy {
+        BGABanner.Adapter<ImageView, String> { bgaBanner, imageView, imageUrl, position ->
+            imageView.load(activity, imageUrl)
+
+        }
+    }
+
+    /**
      * 是否刷新，区别刷新和加载更多
      */
     private var isRefresh = true
@@ -66,14 +77,6 @@ class HomeFragment: BaseMvpFragment<HomeContract.View, HomeContract.Presenter>()
         HomeAdapter(activity, articlesDatas)
     }
 
-    /**
-     * Banner 适配器
-     */
-    private val bannerAdapter: BGABanner.Adapter<ImageView, String> by lazy {
-        BGABanner.Adapter<ImageView, String> { bgaBanner, imageView, feedImageUrl, position ->
-            imageView.load(activity, feedImageUrl)
-        }
-    }
 
 
     private val linearLayoutManager: LinearLayoutManager by lazy {
@@ -133,12 +136,17 @@ class HomeFragment: BaseMvpFragment<HomeContract.View, HomeContract.Presenter>()
             itemAnimator = DefaultItemAnimator()
 //            recyclerViewItemDecoration?.let { addItemDecoration(it) }
         }
+        bannerView = layoutInflater.inflate(R.layout.home_banner, null)
+        bannerView?.findViewById<BGABanner>(R.id.item_banner)?.run {
+            setDelegate(bannerDelegate)
+        }
+
         homeAdapter.run {
             bindToRecyclerView(fragment_home_recycleview)
             setOnLoadMoreListener(onLoadMoreListener, fragment_home_recycleview)
             onItemClickListener = this@HomeFragment.onItemClickListener
             onItemChildClickListener = this@HomeFragment.onItemChildClickListener
-
+            addHeaderView(bannerView)
         }
 
     }
@@ -156,7 +164,19 @@ class HomeFragment: BaseMvpFragment<HomeContract.View, HomeContract.Presenter>()
     }
 
     override fun setBanner(banners: List<Banner>) {
-
+        bannersDatas = banners as ArrayList<Banner>
+        val bannerFeedList = ArrayList<String>()
+        val bannerTitleList = ArrayList<String>()
+        Observable.fromIterable(banners)
+            .subscribe {
+                bannerFeedList.add(it.imagePath)
+                bannerTitleList.add(it.title)
+            }
+        bannerView?.findViewById<BGABanner>(R.id.item_banner)?.run {
+            setAutoPlayAble(bannerFeedList.size > 1)
+            setData(bannerFeedList, bannerTitleList)
+            setAdapter(bannerAdapter)
+        }
     }
 
     override fun setArticlesList(articleList: ArticleList) {
@@ -169,6 +189,7 @@ class HomeFragment: BaseMvpFragment<HomeContract.View, HomeContract.Presenter>()
                     addData(it)
                 }
                 val size = it.size
+                Log.d("chenhanbin", "size = " + size + ", datas.size = " + articleList.size + " , isRefresh = " + isRefresh)
                 if (size < articleList.size) {
                     loadMoreEnd(isRefresh)
                 } else {
@@ -228,6 +249,21 @@ class HomeFragment: BaseMvpFragment<HomeContract.View, HomeContract.Presenter>()
                 }
             }
         }
+
+    }
+
+    private val bannerDelegate = BGABanner.Delegate<ImageView, String> { banner, imageView, model, position ->
+        if (bannersDatas.size > 0) {
+            val data = bannersDatas[position]
+            Intent(activity, DetailsActivity::class.java).run {
+                putExtra(Constant.KEY_DETAIL_ID, data.id)
+                putExtra(Constant.KEY_DETAIL_TITLE, data.title)
+                putExtra(Constant.KEY_DETAIL_URL_KEY, data.url)
+                putExtra(Constant.KEY_DETAIL_COLLECT, false)
+                startActivity(this)
+            }
+        }
+
 
     }
 
