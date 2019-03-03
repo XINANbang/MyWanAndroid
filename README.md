@@ -14,12 +14,12 @@ Kotlin写的wanandroid客户端（MVP+Retrofit+OkHttp+RxJava）
 
 ### 效果图
 
-<figure class="third"><img src="/Users/chenhanbin/Documents/git_project/MyWanAndroid/image/home.png" width="30%" height="30%" />
-    <img src="/Users/chenhanbin/Documents/git_project/MyWanAndroid/image/collect.png" width="30%" height="30%" />
-    <img src="/Users/chenhanbin/Documents/git_project/MyWanAndroid/image/login.png" width="30%" height="30%"/>
+<figure class="third"><img src="https://github.com/XINANbang/MyWanAndroid/blob/master/image/home.pngg" width="30%" height="30%" />
+    <img src="https://github.com/XINANbang/MyWanAndroid/blob/master/image/collect.png" width="30%" height="30%" />
+    <img src="https://github.com/XINANbang/MyWanAndroid/blob/master/image/login.png" width="30%" height="30%"/>
 </figure>
 
-<figure class="third"><img src="/Users/chenhanbin/Documents/git_project/MyWanAndroid/image/night_mode.png" width="30%" height="30%" />
+<figure class="third"><img src="https://github.com/XINANbang/MyWanAndroid/blob/master/image/night_mode.png" width="30%" height="30%" />
 </figure>
 
 
