@@ -1,6 +1,7 @@
 package com.example.mywanandroid.mvp.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -73,6 +74,7 @@ abstract class BaseFragment: Fragment() {
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
+        Log.d("chenhanbin", "setUserVisibleHint = " + isVisibleToUser)
         if (isVisibleToUser) {
             lazyLoadDataIfPrepare()
         }

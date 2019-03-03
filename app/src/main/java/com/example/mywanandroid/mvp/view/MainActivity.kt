@@ -1,6 +1,7 @@
 package com.example.mywanandroid.mvp.view
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import com.google.android.material.snackbar.Snackbar
@@ -9,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.mywanandroid.R
@@ -18,6 +20,7 @@ import com.example.mywanandroid.mvp.base.BaseMvpActivity
 import com.example.mywanandroid.mvp.contract.MainContract
 import com.example.mywanandroid.mvp.presenter.MainPresenter
 import com.example.mywanandroid.utils.Preference
+import com.example.mywanandroid.utils.SettingUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.google.android.material.navigation.NavigationView
@@ -44,6 +47,24 @@ class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(
     override fun layoutId(): Int = R.layout.activity_main
 
     override fun initData() {
+    }
+
+    override fun initColor() {
+        super.initColor()
+        main_layout_bottom_nav.setBackgroundColor(resources.getColor(if (SettingUtil.getIsNightMode()) R.color.Grey800 else R.color.White))
+        main_layout_drawerlayout_nav.setBackgroundColor(resources.getColor(if (SettingUtil.getIsNightMode()) R.color.Grey800 else R.color.White))
+        main_layout_fab.backgroundTintList = ColorStateList.valueOf(mThemeColor)
+    }
+
+    override fun recreate() {
+        val transaction = supportFragmentManager.beginTransaction()
+        hideFragments(transaction)
+        if (homeFragment != null) {
+            transaction.remove(homeFragment!!)
+        }
+        transaction.commit()
+        main_layout_fab.backgroundTintList = ColorStateList.valueOf(mThemeColor)
+        super.recreate()
     }
 
     override fun initView() {
@@ -102,6 +123,7 @@ class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(
     }
 
     override fun start() {
+
     }
 
     override fun showLoading() {
@@ -181,6 +203,10 @@ class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(
         homeFragment?.let { transaction.hide(it) }
     }
 
+    private fun removeFragments(transaction: FragmentTransaction) {
+        homeFragment?.let { transaction.remove(it) }
+    }
+
     private val navigationItemSelectedListener = NavigationView.OnNavigationItemSelectedListener{
         item -> when(item.itemId) {
             R.id.nav_collect -> {
@@ -196,11 +222,20 @@ class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(
                 }
             }
             R.id.nav_about -> {
-
-
+                Intent(this@MainActivity, AboutActivity::class.java).run {
+                    startActivity(this)
+                }
             }
             R.id.nav_night_mode -> {
-
+                SettingUtil.setIsNightMode(!SettingUtil.getIsNightMode())
+                if (SettingUtil.getIsNightMode()) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    SettingUtil.setIsNightMode(true)
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    SettingUtil.setIsNightMode(false)
+                }
+                recreate()
             }
             R.id.nav_setting -> {
 

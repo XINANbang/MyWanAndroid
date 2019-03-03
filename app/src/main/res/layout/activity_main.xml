@@ -51,7 +51,9 @@
                 android:background="@color/viewBackground"
                 app:elevation="@dimen/dp_16"
                 style="@style/Widget.Design.BottomNavigationView"
-                app:menu="@menu/bottom_navigation_main">
+                app:menu="@menu/bottom_navigation_main"
+                app:itemIconTint="@drawable/nav_item_color_state"
+                app:itemTextColor="@drawable/nav_item_color_state">
 
         </com.google.android.material.bottomnavigation.BottomNavigationView>
 
@@ -62,6 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
+            android:background="@color/viewBackground"
             android:fitsSystemWindows="true"
             app:menu="@menu/menu_nav"
             app:itemIconTint="@color/item_nav_color_tv"

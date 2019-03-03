@@ -5,6 +5,9 @@ import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
+import com.example.mywanandroid.utils.SettingUtil
+import java.util.*
 import kotlin.properties.Delegates
 
 /**
@@ -27,6 +30,19 @@ class App: Application() {
         instance = this
         context = applicationContext
         registerActivityLifecycleCallbacks(mActivityLifecycleCallbacks)
+        initTheme()
+    }
+
+    /**
+     * 初始化主题
+     */
+    private fun initTheme() {
+        // 获取当前的主题
+        if (SettingUtil.getIsNightMode()) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
 
     private val mActivityLifecycleCallbacks = object : Application.ActivityLifecycleCallbacks {

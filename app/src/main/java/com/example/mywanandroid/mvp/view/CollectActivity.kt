@@ -24,6 +24,7 @@ import com.example.mywanandroid.mvp.model.bean.CollectionArticle
 import com.example.mywanandroid.mvp.model.bean.CollectionResponseBody
 import com.example.mywanandroid.mvp.presenter.CollectPresenter
 import com.example.mywanandroid.utils.NetworkUtil
+import com.example.mywanandroid.utils.SettingUtil
 import kotlinx.android.synthetic.main.activity_collect.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -66,6 +67,11 @@ class CollectActivity: BaseMvpActivity<CollectContract.View, CollectContract.Pre
 
     override fun initData() {
 
+    }
+
+    override fun initColor() {
+        super.initColor()
+        activity_collect_swip_refresh_layout.setBackgroundColor(resources.getColor(if (SettingUtil.getIsNightMode()) R.color.Grey800 else R.color.White))
     }
 
     override fun initView() {

@@ -1,19 +1,26 @@
 package com.example.mywanandroid.mvp.base
 
 import android.content.IntentFilter
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.example.mywanandroid.R
 import com.example.mywanandroid.constant.Constant
 import com.example.mywanandroid.event.NetworkChangeEvent
 import com.example.mywanandroid.receiver.NetworkChangeReceiver
 import com.example.mywanandroid.utils.KeyBoardUtil
 import com.example.mywanandroid.utils.Preference
+import com.example.mywanandroid.utils.SettingUtil
+import com.example.mywanandroid.utils.StatusBarUtil
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -75,6 +82,20 @@ abstract class BaseActivity: AppCompatActivity() {
         start()
     }
 
+    open fun initColor() {
+        mThemeColor = if (!SettingUtil.getIsNightMode()) {
+            SettingUtil.getColor()
+        } else {
+            resources.getColor(R.color.colorPrimary)
+//            resources.getColor(R.color.Black)
+        }
+        Log.d("chenhanbin_color", "mThemeColor = " + mThemeColor + " , isNight = " + SettingUtil.getIsNightMode())
+        if (this.supportActionBar != null) {
+            this.supportActionBar?.setBackgroundDrawable(ColorDrawable(mThemeColor))
+        }
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         super.onCreate(savedInstanceState)
@@ -84,7 +105,6 @@ abstract class BaseActivity: AppCompatActivity() {
         }
         initData()
         initView()
-        start()
     }
 
     override fun onResume() {
@@ -94,6 +114,8 @@ abstract class BaseActivity: AppCompatActivity() {
         registerReceiver(mNetworkChangeReceiver, filter)
         super.onResume()
 
+        start()
+        initColor()
     }
 
     override fun onPause() {
